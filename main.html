@@ -1,84 +1,66 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Book List</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>MyBookList</title>
   <style>
-    .delete {
-      cursor: pointer;
-    }
-  </style>
+   </style>
 </head>
 <body>
-  <div class="container mt-4">
-    <h1>MyBookList</h1>
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="title">
-    </div>
-    <div class="form-group">
-      <label for="author">Author</label>
-      <input type="text" class="form-control" id="author" >
-    </div>
-    <div class="form-group">
-      <label for="isbn">ISBN</label>
-      <input type="text" class="form-control" id="isbn">
-    </div>
-    <button type="button" class="btn btn-primary" id="submit">Add Book</button>
-    <table class="table table-striped mt-4">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>ISBN#</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="book-list">
-        <!-- Added books will appear here -->
-      </tbody>
-    </table>
+  <h1>MyBookList</h1>
+
+  <div class="form-group">
+    <input type="text" id="title" placeholder="Title">
+    <input type="text" id="author" placeholder="Author">
+    <input type="text" id="isbn" placeholder="ISBN#">
+    <button id="submit">Submit</button>
   </div>
 
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN#</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="book-list">
+      </tbody>
+  </table>
+
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const submitButton = document.getElementById('submit');
-      const bookList = document.getElementById('book-list');
+    function addBook() {
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      const isbn = document.getElementById('isbn').value;
 
-      submitButton.addEventListener('click', function() {
-        const titleInput = document.getElementById('title');
-        const authorInput = document.getElementById('author');
-        const isbnInput = document.getElementById('isbn');
+      if (title && author && isbn) {
+        const bookList = document.getElementById('book-list');
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td>${title}</td>
+          <td>${author}</td>
+          <td>${isbn}</td>
+          <td><button class="delete" onclick="deleteBook(this)">Delete</button></td>
+        `;
+        bookList.appendChild(newRow);
 
-        const title = titleInput.value;
-        const author = authorInput.value;
-        const isbn = isbnInput.value;
+         document.getElementById('title').value = '';
+        document.getElementById('author').value = '';
+        document.getElementById('isbn').value = '';
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
 
-        if (title !== '' && author !== '' && isbn !== '') {
-          const newRow = document.createElement('tr');
-          newRow.innerHTML = `
-            <td>${title}</td>
-            <td>${author}</td>
-            <td>${isbn}</td>
-            <td><button class="btn btn-danger delete">Clear</button></td>
-          `;
+     function deleteBook(button) {
+      const row = button.parentNode.parentNode;
+      row.remove();
+    }
 
-          bookList.appendChild(newRow);
-
-          titleInput.value = '';
-          authorInput.value = '';
-          isbnInput.value = '';
-
-          const deleteButtons = newRow.getElementsByClassName('delete');
-          deleteButtons[0].addEventListener('click', function() {
-            newRow.remove();
-          });
-        }
-      });
-    });
+    document.getElementById('submit').addEventListener('click', addBook);
   </script>
 </body>
 </html>
