@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Book List</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .delete {
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
-	 <div class="container mt-4">
+  <div class="container mt-4">
     <h1>MyBookList</h1>
     <div class="form-group">
       <label for="title">Title</label>
@@ -32,12 +39,47 @@
         </tr>
       </thead>
       <tbody id="book-list">
+        <!-- Added books will appear here -->
       </tbody>
     </table>
   </div>
-    <script type="text/javascript" src="./script.js">
-</script>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitButton = document.getElementById('submit');
+      const bookList = document.getElementById('book-list');
+
+      submitButton.addEventListener('click', function() {
+        const titleInput = document.getElementById('title');
+        const authorInput = document.getElementById('author');
+        const isbnInput = document.getElementById('isbn');
+
+        const title = titleInput.value;
+        const author = authorInput.value;
+        const isbn = isbnInput.value;
+
+        if (title !== '' && author !== '' && isbn !== '') {
+          const newRow = document.createElement('tr');
+          newRow.innerHTML = `
+            <td>${title}</td>
+            <td>${author}</td>
+            <td>${isbn}</td>
+            <td><button class="btn btn-danger delete">Clear</button></td>
+          `;
+
+          bookList.appendChild(newRow);
+
+          titleInput.value = '';
+          authorInput.value = '';
+          isbnInput.value = '';
+
+          const deleteButtons = newRow.getElementsByClassName('delete');
+          deleteButtons[0].addEventListener('click', function() {
+            newRow.remove();
+          });
+        }
+      });
+    });
+  </script>
 </body>
-
 </html>
